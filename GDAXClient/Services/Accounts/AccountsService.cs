@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using GDAXClient.Authentication;
@@ -34,7 +35,7 @@ namespace GDAXClient.Services.Accounts
             return accountList;
         }
 
-        public async Task<Account> GetAccountByIdAsync(string id)
+        public async Task<Account> GetAccountByIdAsync(Guid id)
         {
             var httpResponseMessage = await SendHttpRequestMessageAsync(HttpMethod.Get, authenticator, $"/accounts/{id}");
             var contentBody = await httpClient.ReadAsStringAsync(httpResponseMessage).ConfigureAwait(false);
@@ -43,14 +44,14 @@ namespace GDAXClient.Services.Accounts
             return account;
         }
 
-        public async Task<IList<IList<AccountHistory>>> GetAccountHistoryAsync(string id, int limit = 100)
+        public async Task<IList<IList<AccountHistory>>> GetAccountHistoryAsync(Guid id, int limit = 100)
         {
             var httpResponseMessage = await SendHttpRequestMessagePagedAsync<AccountHistory>(HttpMethod.Get, authenticator, $"/accounts/{id}/ledger?limit={limit}");
 
             return httpResponseMessage;
         }
 
-        public async Task<IList<IList<AccountHold>>> GetAccountHoldsAsync(string id, int limit = 100)
+        public async Task<IList<IList<AccountHold>>> GetAccountHoldsAsync(Guid id, int limit = 100)
         {
             var httpResponseMessage = await SendHttpRequestMessagePagedAsync<AccountHold>(HttpMethod.Get, authenticator, $"/accounts/{id}/holds?limit={limit}");
 
